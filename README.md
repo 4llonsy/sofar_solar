@@ -11,6 +11,7 @@ A project that logs data from sofar solar on-grid inverter and sends the data to
 ## Software requirements:
 - Arduino IDE configured to program ESP8266 based microcontrollers
 - Stable Wifi network
+- Local Blynk server (Recommended)
 - Inverter datasheet for registry related details ([Here's my inverter's registry details for reference](https://github.com/4llonsy/sofar_solar/blob/main/Registry_Details.pdf))
 ### NOTE: The registry information varies slightly for every sofar inverter. So one needs to either get the exact datasheet of the inverter from the manufacturer or just guess what information each registry holds using the above pdf as reference.
 ### Libraries required:
