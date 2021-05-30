@@ -1,5 +1,5 @@
 # sofar_solar
-A project that logs data from sofar solar on-grid inverter and sends the data to thingspeak or blynk server using RS485 modbus interface.
+A project that logs data from sofar solar on-grid inverter and sends the data to the blynk server using RS485 modbus interface.
 
 ## Hardware requirements:
 - On-Grid Solar Powerplant with Sofar inverter (I am using Sofar 3300TL-G3 inverter)
@@ -16,4 +16,3 @@ A project that logs data from sofar solar on-grid inverter and sends the data to
 ### Libraries required:
 - [ModbusMaster](https://github.com/4-20ma/ModbusMaster) for communicating with Modbus slaves over RS232/485 (via RTU protocol).
 - [Blynk](https://github.com/blynkkk/blynk-library) for communicating with the Blynk server.
-- [ThingSpeak](https://github.com/mathworks/thingspeak-arduino) for communicating with the Thingspeak server.
