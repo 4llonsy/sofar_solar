@@ -1,9 +1,10 @@
 #include <ModbusMaster.h>
 #include <SoftwareSerial.h>
-#define RTS_PIN D5        //Pin connected to both DE and RE of the MAX485 module
-
-ModbusMaster node;        //Instantiate modbus object
-SoftwareSerial ss(D6,D7); //Softwareserial object to be used for communicating with RS485
+#define RTS_PIN D5                  //Pin connected to both DE and RE of the MAX485 module
+#define RX_PIN  D6                  //Pin connected to RO
+#define TX_PIN  D7                  //Pin connected to DI
+ModbusMaster node;                  //Instantiate modbus object
+SoftwareSerial ss(RX_PIN, TX_PIN);  //Softwareserial object to be used for communicating with RS485
 
 unsigned short  Inverter_State;
 float           PV_Voltage;
