@@ -13,7 +13,7 @@ A project that logs data from sofar solar on-grid inverter and sends the data to
 - Stable Wifi network
 - Local Blynk server (Recommended)
 - Inverter datasheet for registry related details ([Here's my inverter's registry details for reference](https://github.com/4llonsy/sofar_solar/blob/main/Registry_Details.pdf))
-### NOTE: The registry information varies slightly for every sofar inverter. So one needs to either get the exact datasheet of the inverter from the manufacturer or just guess what information each registry holds using the above pdf as reference.
+### NOTE: The registry information varies slightly for every sofar inverter. So one either needs to get the exact datasheet of the inverter from the manufacturer or just guess what information each registry holds using the above pdf as reference.
 ### Libraries required:
 - [ModbusMaster](https://github.com/4-20ma/ModbusMaster) for communicating with Modbus slaves over RS232/485 (via RTU protocol).
 - [Blynk](https://github.com/blynkkk/blynk-library) for communicating with the Blynk server.
