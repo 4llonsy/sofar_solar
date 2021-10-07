@@ -1,6 +1,8 @@
 # sofar_solar
 A project that logs data from sofar solar on-grid inverter and sends the data to the blynk server using RS485 modbus interface.
-
+# Images
+![blynk-data](images/combine_images.jpg)
+![blynk-superchart](images/Blynk_Superchart.jpg)
 ## Hardware requirements:
 - On-Grid Solar Powerplant with Sofar inverter (I am using Sofar 3300TL-G3 inverter)
 - NodeMCU (or any other ESP8266 based microcontroller)
