@@ -7,7 +7,8 @@ A project that logs data from sofar solar on-grid inverter and sends the data to
 - Max485 module
 - Twisted pair cable
 - Power supply
-  
+## Diagram
+![Schematics]()
 ## Software requirements:
 - Arduino IDE configured to program ESP8266 based microcontrollers
 - Stable Wifi network
