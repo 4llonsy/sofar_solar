@@ -8,7 +8,7 @@ A project that logs data from sofar solar on-grid inverter and sends the data to
 - Twisted pair cable
 - Power supply
 ## Diagram
-![Schematics](./images/schematics.png)
+![Schematics](./images/Schematics.png)
 ## Software requirements:
 - Arduino IDE configured to program ESP8266 based microcontrollers
 - Stable Wifi network
