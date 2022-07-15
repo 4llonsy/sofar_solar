@@ -6,6 +6,10 @@
 ModbusMaster node;                  //Instantiate modbus object
 SoftwareSerial ss(RX_PIN, TX_PIN);  //Softwareserial object to be used for communicating with RS485
 
+
+#define START_ADDRESS 0x00
+#define STOP_ADDRESS 0x2E
+
 unsigned short  Inverter_State;
 float           PV_Voltage;
 float           PV_Current;
@@ -19,15 +23,17 @@ unsigned long   Total_Production;
 unsigned long   Total_Time;
 float           Today_Production;
 unsigned int    Today_Time;
+float           CT_Power;
+
 
 #define BLYNK_PRINT Serial
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 
-#define AUTH            "<your auth token>"
-#define MAIN_SSID       "<your wifi ssid>"
-#define MAIN_PASS       "<your wifi password>"
+#define AUTH            "<Blynk auth token>"
+#define MAIN_SSID       "<wifi name>"
+#define MAIN_PASS       "<wifi pass>"
 
 WidgetTerminal terminal(V0);  //(optional) terminal widget on blynk app is connected to V0 for debugging purposes
 WidgetLED led(V13);           //led widget on blynk app is connected to V13
@@ -44,7 +50,7 @@ BLYNK_WRITE(V0){
 //Modify this block of code according to your inverter registry details.
 bool fetch_data(){
   uint8_t result;
-  result = node.readHoldingRegisters(0x0000, 0x1B); //0x1B (27) registers are read starting from address 0x0000
+  result = node.readHoldingRegisters(START_ADDRESS, STOP_ADDRESS); //0x1B (27) registers are read starting from address 0x0000
   if (result == node.ku8MBSuccess)
   {
     Inverter_State    = (unsigned int)node.getResponseBuffer(0x00);
@@ -63,6 +69,7 @@ bool fetch_data(){
     Total_Time        = (unsigned int)node.getResponseBuffer(0x17)*65536 + (unsigned int)node.getResponseBuffer(0x18);
     Today_Production  = (unsigned int)node.getResponseBuffer(0x19)*0.01;
     Today_Time        = (unsigned int)node.getResponseBuffer(0x1A);
+    CT_Power          = (int16_t)node.getResponseBuffer(0x29)*0.01;
     return true;
   }
   return false;
@@ -71,19 +78,19 @@ bool fetch_data(){
 void blynk_update(){
   terminal.println("Trying to fetch.");
   if(fetch_data()){
-    terminal.println("Data fetched successfully.");
-    terminal.println(PV_Voltage);
-    terminal.println(PV_Current);
-    terminal.println(PV_Power);
-    terminal.println(Active_Power);
-    terminal.println(Reactive_Power);
-    terminal.println(Grid_Frequency);
-    terminal.println(Voltage);
-    terminal.println(Current);
-    terminal.println(Total_Production);
-    terminal.println(Total_Time);
-    terminal.println(Today_Production);
-    terminal.println(Today_Time);
+//    terminal.println("Data fetched successfully.");
+//    terminal.println(PV_Voltage);
+//    terminal.println(PV_Current);
+//    terminal.println(PV_Power);
+//    terminal.println(Active_Power);
+//    terminal.println(Reactive_Power);
+//    terminal.println(Grid_Frequency);
+//    terminal.println(Voltage);
+//    terminal.println(Current);
+//    terminal.println(Total_Production);
+//    terminal.println(Total_Time);
+//    terminal.println(Today_Production);
+//    terminal.println(Today_Time);
     switch(Inverter_State){
       case 0:
         terminal.println("Waiting");
@@ -109,7 +116,6 @@ void blynk_update(){
         break;
     }
     terminal.println("Success!");
-    //Pins V1 to V12 are connected to valued display widgets on Blynk app
     Blynk.virtualWrite(V1, Voltage);
     Blynk.virtualWrite(V2, Current);
     Blynk.virtualWrite(V3, Active_Power);
@@ -122,7 +128,13 @@ void blynk_update(){
     Blynk.virtualWrite(V10, Today_Time);
     Blynk.virtualWrite(V11, Total_Production);
     Blynk.virtualWrite(V12, Total_Time);
+    Blynk.virtualWrite(V14, CT_Power);
     led.on();
+    terminal.println("\n--debug--");
+    for(int i = START_ADDRESS; i <= STOP_ADDRESS; i++){
+      terminal.printf("%02X: %i\n", i, (int)node.getResponseBuffer(i));
+    }
+    terminal.println("----debug----\n");
   }
   else {
     terminal.println("Unable to fetch data.");
@@ -141,7 +153,7 @@ void setup(){
   node.preTransmission(preTransmission);
   node.postTransmission(postTransmission);
 
-  Blynk.begin(AUTH, MAIN_SSID, MAIN_PASS, "10.0.1.2", 82);
+  Blynk.begin(AUTH, MAIN_SSID, MAIN_PASS, "<local blynk server ip>eg. 192.168.2.20", 8080);
   terminal.clear();
   timer.setInterval(1000l, blynk_update); //updates data on blynk every second
 }
